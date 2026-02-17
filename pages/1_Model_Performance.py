@@ -8,9 +8,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve
 
-st.set_page_config(page_icon=r"C:\Users\ADMIN\OneDrive\Pictures\Screenshots\Screenshot 2026-02-17 113716.png")
-
-df = pd.read_csv(r'C:\Users\ADMIN\Downloads\customer-churn\clean_churn_data.csv')
+df = pd.read_csv("clean_churn_data.csv")
 model = pickle.load(open("churn_pipeline.pkl", "rb"))
 
 x_train = df.drop('Churn',axis=1)
