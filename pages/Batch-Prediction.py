@@ -45,4 +45,3 @@ if file is not None:
         except Exception as e:
         
             st.error("⚠️ Something went wrong during prediction.")
-            st.write("Error Details:", e)
