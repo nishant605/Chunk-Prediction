@@ -16,28 +16,33 @@ if file is not None:
     st.divider()
 
     if 'Churn' in data.columns:
+        try:
+            data = data.drop(columns='Churn',axis=1)
+            
+            st.subheader('Prediction is below')
 
-        data = data.drop(columns='Churn',axis=1)
+            pred = model.predict(data)
+            prob = model.predict_proba(data)[:,1]
+
+            data["Churn Prediction"] = pred
+            data["Churn Probability"] = prob
+
+            data['Churn Prediction'] = data['Churn Prediction'].map({
+                0 : 'Not churn',
+                1 : 'Churn'
+            })
+
+            st.dataframe(data.head(10))
+
+            st.divider()
+
+            st.subheader('You can download file from Below: ')
+
+            csv = data.to_csv(index=False).encode('utf-8')
+
+            st.download_button(label='Download',data=csv,file_name='churn_prediction.csv',mime="text/csv")
+
+        except Exception as e:
         
-    st.subheader('Prediction is below')
-
-    pred = model.predict(data)
-    prob = model.predict_proba(data)[:,1]
-
-    data["Churn Prediction"] = pred
-    data["Churn Probability"] = prob
-
-    data['Churn Prediction'] = data['Churn Prediction'].map({
-        0 : 'Not churn',
-        1 : 'Churn'
-    })
-
-    st.dataframe(data.head(10))
-
-    st.divider()
-
-    st.subheader('You can download file from Below: ')
-
-    csv = data.to_csv(index=False).encode('utf-8')
-
-    st.download_button(label='Download',data=csv,file_name='churn_prediction.csv',mime="text/csv")
+            st.error("⚠️ Something went wrong during prediction.")
+            st.write("Error Details:", e)
